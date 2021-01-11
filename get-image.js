@@ -1,5 +1,4 @@
 const fs = require('fs');
-const Discord = require('discord.js');
 
 function countImages() {
   return fs.readdirSync('./images').length;
@@ -13,7 +12,11 @@ function getRandomImageId() {
 function getImageName(id) {
   if (id > countImages()) return null;
   const attachmentId = id ? id : getRandomImageId();
-  return `M${attachmentId}.jpg`;
+  const filename = `M${attachmentId}.jpg`;
+  if (fs.existsSync(`./images/${filename}`)) {
+    return `M${attachmentId}.jpg`;
+  }
+  return null;
 }
 
 module.exports = {
