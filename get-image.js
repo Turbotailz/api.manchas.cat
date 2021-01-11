@@ -10,18 +10,14 @@ function getRandomImageId() {
   return Math.floor(Math.random() * Math.floor(imageCount));
 }
 
+function getImageName(id) {
+  if (id > countImages()) return null;
+  const attachmentId = id ? id : getRandomImageId();
+  return `M${attachmentId}.jpg`;
+}
+
 module.exports = {
   countImages,
   getRandomImageId,
-  getImage(id) {
-    if (id > countImages()) return null;
-    let attachment;
-    if (id) {
-      attachment = new Discord.MessageAttachment(`./images/M${id}.jpg`);
-    } else {
-      const randomId = getRandomImageId();
-      attachment = new Discord.MessageAttachment(`./images/M${randomId}.jpg`);
-    }
-    return attachment;
-  }
+  getImageName,
 }

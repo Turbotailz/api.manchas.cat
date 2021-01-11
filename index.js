@@ -1,9 +1,10 @@
 const express = require('express');
 const Discord = require('discord.js');
 const config = require('./config.json');
-const { getImage } = require('./get-image');
+const { getImageName } = require('./get-image');
 const client = new Discord.Client();
 const app = express();
+const port = process.env.PORT || 6969;
 
 client.login(config.discord_token);
 
@@ -21,14 +22,14 @@ client.on('message', message => {
       id = int;
     }
 
-    const image = getImage(id);
+    const image = getImageName(id);
+    const attachment = new Discord.MessageAttachment(`./images/${image}`);
 
     if (!image) return message.channel.send(`Could not find an image matching ID #${id}`);
 
-    const filename = image.attachment.split('/')[2];
     const embed = new Discord.MessageEmbed()
-      .attachFiles(image)
-      .setImage(`attachment://${filename}`);
+      .attachFiles(attachment)
+      .setImage(`attachment://${image}`);
     message.channel.send(embed);
   }
 });
@@ -37,3 +38,20 @@ client.on('ready', () => {
   console.log('ready');
 });
 
+app.get('/', (req, res) => {
+  const image = getImageName();
+  res.sendFile(`${__dirname}/images/${image}`);
+});
+
+app.get('/:id', (req, res) => {
+  const image = getImageName(req.params.id);
+  if (image) {
+    res.sendFile(`${__dirname}/images/${image}`);
+  } else {
+    res.sendStatus(404);
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
+});
