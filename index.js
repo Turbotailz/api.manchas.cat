@@ -1,7 +1,7 @@
 const express = require('express');
 const Discord = require('discord.js');
 const config = require('./config.json');
-const { getImageName } = require('./get-image');
+const { getRandomImageId, getImageName } = require('./get-image');
 const client = new Discord.Client();
 const app = express();
 const port = process.env.PORT || 6969;
@@ -39,8 +39,8 @@ client.on('ready', () => {
 });
 
 app.get('/', (req, res) => {
-  const image = getImageName();
-  res.sendFile(`${__dirname}/images/${image}`);
+  const id = getRandomImageId();
+  res.redirect(`/${id}`);
 });
 
 app.get('/:id', (req, res) => {
