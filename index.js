@@ -1,57 +1,38 @@
+require('dotenv').config();
+
 const express = require('express');
 const Discord = require('discord.js');
-const config = require('./config.json');
 const { getRandomImageId, getImageName } = require('./get-image');
+const { DISCORD_TOKEN, PORT } = process.env;
 const client = new Discord.Client();
 const app = express();
-const port = process.env.PORT || 6969;
+const router = require('./routes');
+const db = require('./database');
 
-client.login(config.discord_token);
+const { discordMessage, discordReady } = require('./events');
 
-client.on('message', message => {
-  if (message.content.startsWith('!manchas')) {
-    const args = message.content.split(' ');
+// Register Discord events
+client.on('message', discordMessage);
+client.on('ready', discordReady);
 
-    let id;
+// Login to Discord client
+client.login(DISCORD_TOKEN);
 
-    if (args[1]) {
-      const int = parseInt(args[1]);
-      if (isNaN(int)) {
-        return message.channel.send(`Invalid ID: ${args[1]} - must be an integer! uwu`);
-      }
-      id = int;
-    }
+app.use(router);
+// app.get('/', (req, res) => {
+//   const id = getRandomImageId();
+//   res.redirect(`/${id}`);
+// });
+//
+// app.get('/:id', (req, res) => {
+//   const image = getImageName(req.params.id);
+//   if (image) {
+//     res.sendFile(`${__dirname}/images/${image}`);
+//   } else {
+//     res.sendStatus(404);
+//   }
+// });
 
-    const image = getImageName(id);
-    const attachment = new Discord.MessageAttachment(`./images/${image}`);
-
-    if (!image) return message.channel.send(`Could not find an image matching ID #${id}`);
-
-    const embed = new Discord.MessageEmbed()
-      .attachFiles(attachment)
-      .setImage(`attachment://${image}`);
-    message.channel.send(embed);
-  }
-});
-
-client.on('ready', () => {
-  console.log('ready');
-});
-
-app.get('/', (req, res) => {
-  const id = getRandomImageId();
-  res.redirect(`/${id}`);
-});
-
-app.get('/:id', (req, res) => {
-  const image = getImageName(req.params.id);
-  if (image) {
-    res.sendFile(`${__dirname}/images/${image}`);
-  } else {
-    res.sendStatus(404);
-  }
-});
-
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+app.listen(PORT || 6969, () => {
+  console.log(`Example app listening at http://localhost:${PORT}`)
 });
