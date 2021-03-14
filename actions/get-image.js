@@ -1,14 +1,30 @@
 const db = require('../database');
 
-module.exports = async (id) => {
-  let image;
+async function getImage(id) {
+  return !isNaN(parseInt(id)) ? db('images').where({ id }).first() : null;
+}
 
-  if (id) {
-    image = await db('images').where({ id }).first();
-  } else {
-    const { rows } = await db.raw('SELECT * FROM images TABLESAMPLE SYSTEM_ROWS(1)');
-    image = rows[0];
-  }
+async function getImages(currentPage, sort) {
+  return db('images').orderBy('created_at', sort).paginate({ currentPage });
+}
 
-  return image;
+async function getRandomImage() {
+  const { rows } = await db.raw('SELECT * FROM images TABLESAMPLE SYSTEM_ROWS(1)');
+  return rows[0];
+}
+
+async function getLatestImage() {
+  return db('images').whereNotNull('taken_at').orderBy('taken_at', 'desc').first();
+}
+
+async function getLatestImages(currentPage, sort) {
+  return db('images').whereNotNull('taken_at').orderBy('taken_at', sort).paginate({ currentPage });
+}
+
+module.exports = {
+  getImage,
+  getImages,
+  getLatestImage,
+  getLatestImages,
+  getRandomImage,
 }

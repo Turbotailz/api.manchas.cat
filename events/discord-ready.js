@@ -1,4 +1,3 @@
-module.exports = client => {
+module.exports = () => {
   console.log('Logged in to Discord');
-  console.log(client);
 }

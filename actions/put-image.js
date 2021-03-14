@@ -3,8 +3,9 @@ const exifr = require('exifr');
 const AWS = require('aws-sdk');
 const { env } = process;
 const FileType = require('file-type');
+const crypto = require('crypto');
 
-async function putImage(filename, image, caption, knex) {
+async function putImage(image, caption, knex) {
   const db = knex || database;
 
   let taken_at;
@@ -27,7 +28,7 @@ async function putImage(filename, image, caption, knex) {
   });
 
   const { mime: ContentType } = await FileType.fromBuffer(image);
-  const Key = env.S3_IMAGE_DIR + filename;
+  const Key = env.S3_IMAGE_DIR + crypto.randomBytes(10).toString('hex');
 
   try {
     const data = await s3.upload({
