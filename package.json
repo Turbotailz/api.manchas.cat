@@ -2,9 +2,9 @@
   "name": "api.manchas.cat",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server/index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node server/index.js"
   },
   "author": "",
   "license": "ISC",
@@ -17,14 +17,17 @@
     "dotenv": "^8.2.0",
     "exifr": "^6.0.0",
     "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
     "express-session": "^1.17.1",
     "file-type": "^16.2.0",
     "knex": "^0.21.16",
     "knex-paginate": "^1.2.3",
     "morgan": "^1.10.0",
-    "multer": "^1.4.2",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "pg": "^8.5.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.24.0"
   }
 }

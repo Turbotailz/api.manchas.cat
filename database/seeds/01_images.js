@@ -1,6 +1,6 @@
 const fs = require('fs');
-const { putImage } = require('../../actions');
-const filePath = __dirname + '/images/'
+const { putImage } = require('../../server/actions');
+const filePath = __dirname + '/images/';
 const images = fs.readdirSync(filePath);
 
 exports.seed = async knex => {

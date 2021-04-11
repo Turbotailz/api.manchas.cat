@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const Discord = require('discord.js');
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const expressSession = require('express-session')({
   secret: SECRET_TOKEN,
   cookie: {
@@ -29,6 +30,7 @@ const corsOptions = {
 };
 
 app.use(morgan('dev'));
+app.use(fileUpload());
 app.use(expressSession);
 app.use(passport.initialize());
 app.use(passport.session());
@@ -48,4 +50,4 @@ client.on('message', discordMessage);
 client.on('ready', discordReady);
 
 // Login to Discord client
-// client.login(DISCORD_TOKEN);
+client.login(DISCORD_TOKEN);

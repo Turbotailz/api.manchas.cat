@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const { getHash } = require('../../util/password');
+const { getHash } = require('../../server/util/password');
 
 exports.seed = async (knex) => {
   // Deletes ALL existing entries
