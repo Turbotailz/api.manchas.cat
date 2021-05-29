@@ -1,5 +1,22 @@
 const db = require('../../database');
 
+let imageIds = [];
+
+async function fetchImageIds() {
+  try {
+    const images = await db('images').select('id');
+    imageIds = images.map(({ id }) => id);
+    console.log(imageIds);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+(async function initImageArray() {
+  await fetchImageIds();
+  setInterval(fetchImageIds, 300000);
+})();
+
 async function getImage(id) {
   return !isNaN(parseInt(id)) ? db('images').where({ id }).first() : null;
 }
@@ -9,8 +26,8 @@ async function getImages(currentPage, sort) {
 }
 
 async function getRandomImage() {
-  const { rows } = await db.raw('SELECT * FROM images TABLESAMPLE SYSTEM_ROWS(1)');
-  return rows[0];
+  const randomId = imageIds[Math.floor(Math.random() * imageIds.length)];
+  return getImage(randomId);
 }
 
 async function getLatestImage() {
