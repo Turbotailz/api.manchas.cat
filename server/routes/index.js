@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('../util/passport');
-const { putImage } = require('../actions');
 
-const { getImage, getImages, getLatestImage, getLatestImages, getRandomImage } = require('../actions');
+const { getImage, getImages, getLatestImage, getLatestImages, getRandomImage, putImage, deleteImage } = require('../actions');
 
 function parsePage(page) {
   const pageInt = parseInt(page);
@@ -59,6 +58,12 @@ router.get('/:id', async (req, res) => {
   const id = req.params.id;
   const image = await getImage(id);
   image ? res.send(image) : res.sendStatus(404);
+});
+
+// Delete image by ID
+router.delete('/:id', authorise, async (req, res) => {
+  const id = req.params.id;
+  await deleteImage(id) ? res.sendStatus(200) : res.sendStatus(404);
 });
 
 router.post('/upload', authorise, async (req, res) => {

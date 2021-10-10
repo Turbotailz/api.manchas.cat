@@ -1,9 +1,10 @@
 
 exports.up = function(knex) {
   return knex.schema.createTable('images', table => {
-    table.increments();
-    table.string('caption');
-    table.string('source').notNullable();
+    table.string('id').primary().notNullable();
+    table.string('source_small').notNullable();
+    table.string('source_medium').notNullable();
+    table.string('source_large').notNullable();
     table.timestamp('taken_at');
     table.timestamp('created_at').defaultTo(knex.fn.now());
     table.timestamp('updated_at').defaultTo(knex.fn.now());

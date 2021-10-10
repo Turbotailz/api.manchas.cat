@@ -2,7 +2,7 @@ const db = require('../../database');
 
 let imageIds = [];
 
-const imageColumns = ['id', 'source', 'taken_at'];
+const imageColumns = ['id', 'source_small', 'source_medium', 'source_large', 'taken_at'];
 
 async function fetchImageIds() {
   try {
@@ -19,7 +19,7 @@ async function fetchImageIds() {
 })();
 
 async function getImage(id) {
-  return !isNaN(parseInt(id)) ? db('images').select(imageColumns).where({ id }).first() : null;
+  return db('images').select(imageColumns).where({ id }).first();
 }
 
 async function getImages(currentPage, sort) {
