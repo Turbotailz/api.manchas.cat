@@ -1,7 +1,7 @@
-const discordMessage = require('./discord-message');
 const discordReady = require('./discord-ready');
+const discordInteraction = require('./discord-interaction');
 
 module.exports = {
-  discordMessage,
   discordReady,
+  discordInteraction,
 };

@@ -4,7 +4,6 @@ const { ENVIRONMENT_DOMAIN, DISCORD_TOKEN, PORT, SECRET_TOKEN } = process.env;
 
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const Discord = require('discord.js');
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const expressSession = require('express-session')({
@@ -17,11 +16,13 @@ const expressSession = require('express-session')({
   unset: 'destroy',
 });
 const morgan = require('morgan');
+
 const passport = require('./util/passport');
 const router = require('./routes');
-const { discordMessage, discordReady } = require('./events');
+const setupDiscordBot = require('./discord');
 
 const app = express();
+
 const corsOptions = {
   origin: ENVIRONMENT_DOMAIN,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -40,14 +41,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(router);
 
 app.listen(PORT || 6969, () => {
-  console.log(`App started. Listening on http://localhost:${PORT}`);
+  console.log(`App started. Listening on ${PORT}`);
 });
 
-const client = new Discord.Client();
-
-// Register Discord events
-client.on('message', discordMessage);
-client.on('ready', discordReady);
-
-// Login to Discord client
-client.login(DISCORD_TOKEN);
+// If you do not wish to use Discord features, simply leave DISCORD_TOKEN blank
+if (DISCORD_TOKEN) {
+  setupDiscordBot();
+}

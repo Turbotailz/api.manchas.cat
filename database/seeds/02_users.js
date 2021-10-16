@@ -8,7 +8,8 @@ exports.seed = async (knex) => {
 
   // Inserts seed entries
   await knex('users').insert([
-    { id: 1, email: 'sam.goodger@outlook.com', password: getHash('yeet') },
+    // uncomment the following line and add your own email/password
+    // { id: 1, email: 'user@mail.com', password: getHash('hunter2') },
   ]);
 
 };

@@ -19,6 +19,9 @@ async function fetchImageIds() {
 })();
 
 async function getImage(id) {
+  if (!id) return getRandomImage();
+  if (id === 'latest') return getLatestImage();
+
   return db('images').select(imageColumns).where({ id }).first();
 }
 

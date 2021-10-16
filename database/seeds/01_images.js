@@ -1,3 +1,9 @@
+/* HOW TO BULK LOAD IMAGES
+ * Simply place images in the "images" folder to seed them
+ * The order images are uploaded cannot be guaranteed because of how Promise.all() works
+ * For best results, make sure your images have the metadata "DateTimeOriginal"
+ */
+
 const fs = require('fs');
 const { putImage } = require('../../server/actions');
 const filePath = __dirname + '/images/';

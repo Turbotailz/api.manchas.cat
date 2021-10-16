@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const { env } = process;
 
-// Update with your config settings.
+// Update with your config settings if necessary
 module.exports = {
 
   development: {
@@ -22,35 +22,24 @@ module.exports = {
     }
   },
 
-  staging: {
-    client: 'postgresql',
-    connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
-    },
-    pool: {
-      min: 2,
-      max: 10
-    },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
-  },
-
   production: {
-    client: 'postgresql',
+    client: 'pg',
     connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
+      host : env.PSQL_HOST,
+      user : env.PSQL_USER,
+      password : env.PSQL_PASSWORD,
+      database : env.PSQL_DATABASE,
+      charset: env.PSQL_CHARSET
     },
     pool: {
       min: 2,
       max: 10
     },
     migrations: {
-      tableName: 'knex_migrations'
+      directory: __dirname + '/database/migrations',
+    },
+    seeds: {
+      directory: __dirname + '/database/seeds'
     }
   }
 

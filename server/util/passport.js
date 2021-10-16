@@ -7,28 +7,28 @@ passport.use(new Strategy(
   {
     usernameField: 'email'
   },
-  async (email, password, cb) => {
+  async (email, password, next) => {
     try {
       const user = await db('users').where({ email }).first();
-      if (!user) return cb(null, false);
-      if (user.password !== getHash(password)) return cb(null, false);
-      return cb(null, user);
+      if (!user) return next(null, false);
+      if (user.password !== getHash(password)) return next(null, false);
+      return next(null, user);
     } catch (error) {
-      return cb(error);
+      return next(error);
     }
   }
 ));
 
-passport.serializeUser((user, cb) => {
-  cb(null, user.id);
+passport.serializeUser((user, next) => {
+  next(null, user.id);
 });
 
-passport.deserializeUser(async (id, cb) => {
+passport.deserializeUser(async (id, next) => {
   try {
     const user = await db('users').where({ id }).first();
-    cb(null, user);
+    next(null, user);
   } catch (error) {
-    cb(error);
+    next(error);
   }
 });
 
