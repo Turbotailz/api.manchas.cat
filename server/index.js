@@ -30,8 +30,10 @@ const corsOptions = {
   exposedHeaders: ['set-cookie'],
 };
 
+
+
 app.use(morgan('dev'));
-app.use(fileUpload());
+app.use(fileUpload({ limits: { fileSize: 10 * 1024 * 1024 }}));
 app.use(expressSession);
 app.use(passport.initialize());
 app.use(passport.session());
