@@ -15,7 +15,7 @@ module.exports = {
 
     const image = await getImage(id);
 
-    const embed = new MessageEmbed().setImage(image.source_medium).setFooter(`ID: ${image.id}\nTaken at: ${image.taken_at.split('T')[0]}`);
+    const embed = new MessageEmbed().setImage(image.source_medium).setTimestamp(new Date(image.taken_at)).setFooter(`ID: ${image.id}}`);
 
     await interaction.reply({ embeds: [ embed ]});
   }
